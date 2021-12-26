@@ -1,0 +1,109 @@
+@startuml
+
+class Game {
+    #Command[string] _commands;
+    +bool failed
+
+    +@property bool won()
+    +int mainLoop()
+    +void registerCommand(string commandName, Command command)
+    +{static} Board generateBoardWith(ProgramArgument pa)
+}
+
+Game *-- Board
+Game o-- Command
+Game ..> BoardGenerator
+Game ..> ProgramArgument
+
+enum Cell {
+	empty
+	mine
+	mineFlagged
+	emptyFlagged
+	opened
+
+    + {static} bool isFlaggedCell(Cell cell)
+    + {static} bool isMineCell(Cell cell)
+}
+
+class Index2D <<struct>> {
+    +int x
+    +int y
+
+    +int opCmp(const Index2D other)
+    +Index2D opBinary(string op)(const Index2D rhs) if (op == "+")
+    +Index2D opBinary(string op)(const Index2D rhs) if (op == "-")
+}
+
+class Board {
+    #uint _height;
+    #uint _width;
+    #uint _mine_amount;
+    #uint _flag_count;
+    #uint _opened_count;
+    #byte[][] _surrounding_mine_cell_counts;
+
+    +@property uint height()
+    +@property uint width()
+    +@property uint mine_amount()
+    +@property uint flag_count()
+    +@property uint opened_count()
+
+    +Cell getCell(Index2D i2d)
+    #void setCell(Index2D i2d, Cell cell)
+    +bool setMine(Index2D i2d)
+    +void openCell(Index2D i2d)
+    +bool toggleFlagged(Index2D i2d)
+    +ubyte getSurroundingMineCellCount(Index2D i2d)
+    +ubyte getSurroundingFlaggedCellCount(Index2D i2d)
+    +bool isValidCellIndex(Index2D i2d)
+    #string getCellString(Index2D i2d)
+    +override string toString()
+    +override bool opEquals(Object other)
+
+    .. debug 用プロパティ・メソッド ..
+    +debug @property Cell[][] cells()
+    +debug ulong getActualMineCount()
+}
+
+Board *-- Cell
+
+class ProgramArgument <<struct>> {
+    +uint board_height
+    +uint board_width
+    +uint mine_amount
+    +string board_file_path
+}
+
+abstract class BoardGenerator {
+    #uint _board_height
+    #uint _board_width
+
+    @property Index2D[] mineIndexes()
+    Board generateBoard()
+}
+
+class RandomBoardGenerator extends BoardGenerator {
+    #uint _mine_amount
+}
+
+class ManualBoardGenerator extends BoardGenerator {
+    #RedBlackTree!Index2D _mine_indexes;
+}
+
+class FromBoardStringBoardGenerator extends BoardGenerator {
+    #Index2D[] _mine_indexes;
+}
+
+interface Command {
+    +execute(string[] args, Game game)
+}
+
+class OpenCommand implements Command
+class FlagCommand implements Command
+class ChordCommand implements Command
+class HelpCommand implements Command
+
+hide <<struct>> circle
+
+@enduml

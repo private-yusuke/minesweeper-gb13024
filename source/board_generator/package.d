@@ -1,0 +1,6 @@
+module board_generator;
+
+public import board_generator.board_generator;
+public import board_generator.random_board_generator;
+public import board_generator.manual_board_generator;
+public import board_generator.from_board_string_board_generator;

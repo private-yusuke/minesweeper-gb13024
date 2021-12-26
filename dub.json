@@ -1,0 +1,21 @@
+{
+	"authors": [
+		"public_yusuke"
+	],
+	"copyright": "Copyright © 2021, public_yusuke",
+	"description": "Let's play one of the best games created in the good old days!",
+	"license": "MIT",
+	"name": "minesweeper",
+	"configurations": [
+		{
+			"name": "executable",
+			"targetType": "executable"
+		},
+		{
+			"name": "unittest",
+			"dependencies": {
+				"silly": "~>1.1.1"
+			}
+		}
+	]
+}
