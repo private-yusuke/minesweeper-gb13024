@@ -5,7 +5,7 @@
 	"copyright": "Copyright © 2021, public_yusuke",
 	"description": "Let's play one of the best games created in the good old days!",
 	"license": "MIT",
-	"name": "minesweeper",
+	"name": "minesweeper-gb13024",
 	"configurations": [
 		{
 			"name": "executable",
